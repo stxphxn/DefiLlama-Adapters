@@ -1,5 +1,22 @@
 const sdk = require('@defillama/sdk');
 const { v1Tvl, onChainTvl } = require('../helper/balancer')
+const { request, gql } = require("graphql-request");
+
+const graphEndpoints = {
+  etlk: sdk.graph.modifyEndpoint('4y4fC3k9DMrJ9XYY6Z1Qi8DXJkpRrQuQCjh7zBRhxjQr')
+}
+
+async function tvlFromGraph(network) {
+  const query = gql`
+  {
+    balancers(first: 1) {
+      totalLiquidity
+    }
+  }
+  `
+  const res = await request(graphEndpoint[network], graphQuery);
+  return res.balancers[0].totalLiqudity
+}
 
 module.exports = {
   celo: {
@@ -23,4 +40,7 @@ module.exports = {
   taiko: {
     tvl: onChainTvl('0xbccc4b4c6530F82FE309c5E845E50b5E9C89f2AD', 371729),
   },
+  etlk: {
+    tvl: tvlFromGraph('etlk')
+  }
 }
