@@ -14,7 +14,7 @@ async function tvlFromGraph(network) {
     }
   }
   `
-  const res = await request(graphEndpoints[network], graphQuery);
+  const res = await request(graphEndpoints[network], query);
   return res.balancers[0].totalLiqudity
 }
 
