@@ -7,7 +7,7 @@ const graphEndpoints = {
   etlk: sdk.graph.modifyEndpoint('4y4fC3k9DMrJ9XYY6Z1Qi8DXJkpRrQuQCjh7zBRhxjQr')
 }
 
-async function tokensFromGraph(vault, network) {
+function tokensFromGraph(vault, network) {
   return async (api) => {
     const query = gql`
     {
@@ -18,6 +18,7 @@ async function tokensFromGraph(vault, network) {
     `
     const res = await request(graphEndpoints[network], query);
     const tokens = res.tokens.map(t => t.address) || [];
+    console.log('tokens from graph', tokens);
     return sumTokens2({ api, owner: vault, tokens, blacklistedTokens: [] })
   }
 }
